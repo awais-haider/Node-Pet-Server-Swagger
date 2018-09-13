@@ -12,7 +12,7 @@ exports.deleteOrder = function(orderId) {
   return new Promise(function(resolve, reject) {
     resolve();
   });
-}
+};
 
 
 /**
@@ -33,7 +33,7 @@ exports.getInventory = function() {
       resolve();
     }
   });
-}
+};
 
 
 /**
@@ -60,7 +60,7 @@ exports.getOrderById = function(orderId) {
       resolve();
     }
   });
-}
+};
 
 
 /**
@@ -87,5 +87,5 @@ exports.placeOrder = function(body) {
       resolve();
     }
   });
-}
+};
 

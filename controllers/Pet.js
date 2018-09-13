@@ -1,73 +1,74 @@
 'use strict';
 
 var utils = require('../utils/writer.js');
-var Pet = require('../service/PetService');
+const Pet = require('../service/PetService');
+
 
 module.exports.addPet = function addPet (req, res, next) {
   var body = req.swagger.params['body'].value;
   Pet.addPet(body)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
+      .then(function (response) {
+          utils.writeJson(res, response[0], response[1]);
+      })
+      .catch(function (response) {
+          utils.writeJson(res, response[0], response[1]);
+      });
 };
 
 module.exports.deletePet = function deletePet (req, res, next) {
   var petId = req.swagger.params['petId'].value;
   var api_key = req.swagger.params['api_key'].value;
   Pet.deletePet(petId,api_key)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
+      .then(function (response) {
+          utils.writeJson(res, response[0], response[1]);
+      })
+      .catch(function (response) {
+          utils.writeJson(res, response[0], response[1]);
+      });
 };
 
 module.exports.findPetsByStatus = function findPetsByStatus (req, res, next) {
   var status = req.swagger.params['status'].value;
   Pet.findPetsByStatus(status)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
+      .then(function (response) {
+          utils.writeJson(res, response[0], response[1]);
+      })
+      .catch(function (response) {
+          utils.writeJson(res, response[0], response[1]);
+      });
 };
 
 module.exports.findPetsByTags = function findPetsByTags (req, res, next) {
   var tags = req.swagger.params['tags'].value;
   Pet.findPetsByTags(tags)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
+      .then(function (response) {
+          utils.writeJson(res, response[0], response[1]);
+      })
+      .catch(function (response) {
+          utils.writeJson(res, response[0], response[1]);
+      });
 };
 
 module.exports.getPetById = function getPetById (req, res, next) {
   var petId = req.swagger.params['petId'].value;
   Pet.getPetById(petId)
     .then(function (response) {
-      utils.writeJson(res, response);
+      utils.writeJson(res, response[0], response[1]);
     })
     .catch(function (response) {
-      utils.writeJson(res, response);
+        utils.writeJson(res, response[0], response[1]);
     });
 };
 
 module.exports.updatePet = function updatePet (req, res, next) {
   var body = req.swagger.params['body'].value;
   Pet.updatePet(body)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
+      .then(function (response) {
+          utils.writeJson(res, response[0], response[1]);
+      })
+      .catch(function (response) {
+          utils.writeJson(res, response[0], response[1]);
+      });
 };
 
 module.exports.updatePetWithForm = function updatePetWithForm (req, res, next) {

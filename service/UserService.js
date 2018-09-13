@@ -12,7 +12,7 @@ exports.createUser = function(body) {
   return new Promise(function(resolve, reject) {
     resolve();
   });
-}
+};
 
 
 /**
@@ -26,7 +26,7 @@ exports.createUsersWithArrayInput = function(body) {
   return new Promise(function(resolve, reject) {
     resolve();
   });
-}
+};
 
 
 /**
@@ -40,7 +40,7 @@ exports.createUsersWithListInput = function(body) {
   return new Promise(function(resolve, reject) {
     resolve();
   });
-}
+};
 
 
 /**
@@ -54,7 +54,7 @@ exports.deleteUser = function(username) {
   return new Promise(function(resolve, reject) {
     resolve();
   });
-}
+};
 
 
 /**
@@ -83,7 +83,7 @@ exports.getUserByName = function(username) {
       resolve();
     }
   });
-}
+};
 
 
 /**
@@ -104,7 +104,7 @@ exports.loginUser = function(username,password) {
       resolve();
     }
   });
-}
+};
 
 
 /**
@@ -117,7 +117,7 @@ exports.logoutUser = function() {
   return new Promise(function(resolve, reject) {
     resolve();
   });
-}
+};
 
 
 /**
@@ -132,5 +132,5 @@ exports.updateUser = function(username,body) {
   return new Promise(function(resolve, reject) {
     resolve();
   });
-}
+};
 

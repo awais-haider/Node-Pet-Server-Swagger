@@ -1,5 +1,7 @@
-'use strict';
 
+const mongoose = require('mongoose');
+var GenerateSchema = require('generate-schema');
+const Pet = require('../models/PetStoreModels');
 
 /**
  * Add a new pet to the store
@@ -10,9 +12,31 @@
  **/
 exports.addPet = function(body) {
   return new Promise(function(resolve, reject) {
-    resolve();
+      var resultObject = [];
+    console.log(JSON.stringify(GenerateSchema.json('Pet', body)));
+    var petToBeSaved = new Pet(body);
+    petToBeSaved.save(function (err) {
+      if (err) {
+          console.log('New pet is not stored successfully');
+          resultObject[0] = "Failure";
+          resultObject[1] = 400;
+          reject(resultObject);
+      }else {
+          console.log('New pet is stored successfully');
+          resultObject[0] = petToBeSaved;
+          resultObject[1] = 200;
+          reject(resultObject);
+
+      }
+
+    });
+
+
+
+
+
   });
-}
+};
 
 
 /**
@@ -25,9 +49,32 @@ exports.addPet = function(body) {
  **/
 exports.deletePet = function(petId,api_key) {
   return new Promise(function(resolve, reject) {
-    resolve();
+
+      var resultObject = [];
+      Pet.remove({id : petId}).exec().then(result => {
+          console.log("From database", result);
+
+          if (result != null) {
+
+              resultObject[0] = result;
+              resultObject[1] = 200;
+              resolve(resultObject);
+
+
+          } else {
+              resultObject[1] = 400;
+              reject(resultObject);
+          }
+      }).catch(err => {
+          resultObject[0] = "";
+          resultObject[1] = 404;
+          console.log(err);
+          reject(resultObject);
+      });
+
+
   });
-}
+};
 
 
 /**
@@ -39,47 +86,30 @@ exports.deletePet = function(petId,api_key) {
  **/
 exports.findPetsByStatus = function(status) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = [ {
-  "photoUrls" : [ "photoUrls", "photoUrls" ],
-  "name" : "doggie",
-  "id" : 0,
-  "category" : {
-    "name" : "name",
-    "id" : 6
-  },
-  "tags" : [ {
-    "name" : "name",
-    "id" : 1
-  }, {
-    "name" : "name",
-    "id" : 1
-  } ],
-  "status" : "available"
-}, {
-  "photoUrls" : [ "photoUrls", "photoUrls" ],
-  "name" : "doggie",
-  "id" : 0,
-  "category" : {
-    "name" : "name",
-    "id" : 6
-  },
-  "tags" : [ {
-    "name" : "name",
-    "id" : 1
-  }, {
-    "name" : "name",
-    "id" : 1
-  } ],
-  "status" : "available"
-} ];
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+      var resultObject = [];
+      Pet.find({'status': status }).then(doc => {
+          console.log("From database", doc);
+
+          if (doc != null && doc.length > 0) {
+
+              resultObject[0] = doc;
+              resultObject[1] = 200;
+              resolve(resultObject);
+
+
+          } else {
+              resultObject[0] = "";
+              resultObject[1] = 400;
+              reject(resultObject);
+          }
+      }).catch(err => {
+          resultObject[0] = "";
+          resultObject[1] = 404;
+          console.log(err);
+          reject(resultObject);
+      });
   });
-}
+};
 
 
 /**
@@ -91,47 +121,31 @@ exports.findPetsByStatus = function(status) {
  **/
 exports.findPetsByTags = function(tags) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = [ {
-  "photoUrls" : [ "photoUrls", "photoUrls" ],
-  "name" : "doggie",
-  "id" : 0,
-  "category" : {
-    "name" : "name",
-    "id" : 6
-  },
-  "tags" : [ {
-    "name" : "name",
-    "id" : 1
-  }, {
-    "name" : "name",
-    "id" : 1
-  } ],
-  "status" : "available"
-}, {
-  "photoUrls" : [ "photoUrls", "photoUrls" ],
-  "name" : "doggie",
-  "id" : 0,
-  "category" : {
-    "name" : "name",
-    "id" : 6
-  },
-  "tags" : [ {
-    "name" : "name",
-    "id" : 1
-  }, {
-    "name" : "name",
-    "id" : 1
-  } ],
-  "status" : "available"
-} ];
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+      var resultObject = [];
+          Pet.find({'tags.name': { $all: tags }}).then(doc => {
+          console.log("From database", doc);
+
+          if (doc != null && doc.length > 0) {
+
+              resultObject[0] = doc;
+              resultObject[1] = 200;
+              resolve(resultObject);
+
+
+          } else {
+              resultObject[0] = "";
+              resultObject[1] = 400;
+              reject(resultObject);
+          }
+      }).catch(err => {
+          resultObject[0] = "";
+          resultObject[1] = 404;
+          console.log(err);
+          reject(resultObject);
+      });
+
   });
-}
+};
 
 
 /**
@@ -143,31 +157,33 @@ exports.findPetsByTags = function(tags) {
  **/
 exports.getPetById = function(petId) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "photoUrls" : [ "photoUrls", "photoUrls" ],
-  "name" : "doggie",
-  "id" : 0,
-  "category" : {
-    "name" : "name",
-    "id" : 6
-  },
-  "tags" : [ {
-    "name" : "name",
-    "id" : 1
-  }, {
-    "name" : "name",
-    "id" : 1
-  } ],
-  "status" : "available"
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+
+      const id = petId;
+      var resultObject = [];
+      Pet.find({'id': id }).then(doc => {
+          console.log("From database", doc);
+
+          if (doc != null && doc.length > 0) {
+
+              resultObject[0] = doc;
+              resultObject[1] = 200;
+              resolve(resultObject);
+
+
+          } else {
+              resultObject[0] = "";
+              resultObject[1] = 400;
+              reject(resultObject);
+          }
+      }).catch(err => {
+          resultObject[0] = "";
+          resultObject[1] = 404;
+          console.log(err);
+          reject(resultObject);
+      });
+
   });
-}
+};
 
 
 /**
@@ -179,9 +195,33 @@ exports.getPetById = function(petId) {
  **/
 exports.updatePet = function(body) {
   return new Promise(function(resolve, reject) {
-    resolve();
+
+      var resultObject = [];
+      Pet.update({id : body.id}, { "$set": body }).exec().then(result => {
+          console.log("From database", result);
+
+          if (result != null && result.nModified === 1 ) {
+
+              resultObject[0] = result;
+              resultObject[1] = 200;
+              resolve(resultObject);
+
+
+          } else {
+              resultObject[1] = 400;
+              reject(resultObject);
+          }
+      }).catch(err => {
+          resultObject[0] = "";
+          resultObject[1] = 404;
+          console.log(err);
+          reject(resultObject);
+      });
+
+
+
   });
-}
+};
 
 
 /**
@@ -197,7 +237,7 @@ exports.updatePetWithForm = function(petId,name,status) {
   return new Promise(function(resolve, reject) {
     resolve();
   });
-}
+};
 
 
 /**
@@ -223,5 +263,10 @@ exports.uploadFile = function(petId,additionalMetadata,file) {
       resolve();
     }
   });
-}
+};
+
+
+
+
+
 
